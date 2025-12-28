@@ -1,11 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { CodeXml, Menu, X, Bell, LogOut, Settings, User, ChevronDown } from "lucide-react";
+import { CodeXml, Bell, LogOut, Settings, User, ChevronDown, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useRef, useEffect } from "react";
 
-const AdminHeader = () => {
+interface AdminHeaderProps {
+  activePage: 'students' | 'results' | 'stats' | 'settings';
+  onPageChange: (page: 'students' | 'results' | 'stats' | 'settings') => void;
+}
+
+const AdminHeader = ({ activePage, onPageChange }: AdminHeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
@@ -20,9 +25,8 @@ const AdminHeader = () => {
   ]);
 
   const navLinks = [
-    { href: "/admin/students", label: "Étudiants" },
-    { href: "/admin/results", label: "Résultats" },
-    { href: "/admin/analytics", label: "Analytics" },
+    { id: 'students', label: "Étudiants" },
+    { id: 'results', label: "Résultats" },
   ];
 
   const unreadNotifications = notifications.filter(n => n.unread).length;
@@ -135,11 +139,23 @@ const AdminHeader = () => {
                     </div>
                   </div>
                   <div className="p-1">
-                    <button className="w-full flex items-center px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md">
+                    <button 
+                      className="w-full flex items-center px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md"
+                      onClick={() => {
+                        onPageChange('settings');
+                        setIsProfileOpen(false);
+                      }}
+                    >
                       <User className="mr-3 h-4 w-4" />
                       Mon profil
                     </button>
-                    <button className="w-full flex items-center px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md">
+                    <button 
+                      className="w-full flex items-center px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md"
+                      onClick={() => {
+                        onPageChange('settings');
+                        setIsProfileOpen(false);
+                      }}
+                    >
                       <Settings className="mr-3 h-4 w-4" />
                       Paramètres
                     </button>
@@ -204,7 +220,7 @@ const AdminHeader = () => {
                         AD
                       </div>
                       <div className="flex-1">
-                        <p className="text-sm font-medium text-gray-900">Admin CFI</p>
+                        <p className="text-sm font-medium text-white">Admin CFI</p>
                         <p className="text-xs text-gray-500">Administrateur</p>
                         <p className="text-xs text-gray-400 mt-1">admin@cfi-ciras.com</p>
                       </div>
@@ -222,14 +238,20 @@ const AdminHeader = () => {
                     <nav className="flex-1 p-4 bg-slate-700">
                       <div className="space-y-2">
                         {navLinks.map((link) => (
-                          <Link
-                            key={link.href}
-                            href={link.href}
-                            className="block font-medium text-white hover:text-orange-600 transition-colors py-3 px-4 rounded-lg hover:bg-gray-50"
-                            onClick={() => setIsMenuOpen(false)}
+                          <button
+                            key={link.id}
+                            onClick={() => {
+                              onPageChange(link.id as any);
+                              setIsMenuOpen(false);
+                            }}
+                            className={`w-full text-left font-medium py-3 px-4 rounded-lg transition-colors ${
+                              activePage === link.id
+                                ? 'bg-orange-600 text-white'
+                                : 'text-white hover:text-orange-600 hover:bg-gray-50'
+                            }`}
                           >
                             {link.label}
-                          </Link>
+                          </button>
                         ))}
                       </div>
                     </nav>
@@ -237,11 +259,23 @@ const AdminHeader = () => {
                     {/* Actions Mobile */}
                     <div className="p-4 border-t bg-slate-700">
                       <div className="space-y-2">
-                        <button className="w-full flex items-center text-sm font-medium text-white hover:text-orange-600 transition-colors py-3 px-4 rounded-lg hover:bg-gray-50">
+                        <button 
+                          className="w-full flex items-center text-sm font-medium text-white hover:text-orange-600 transition-colors py-3 px-4 rounded-lg hover:bg-gray-50"
+                          onClick={() => {
+                            onPageChange('settings');
+                            setIsMenuOpen(false);
+                          }}
+                        >
                           <User className="mr-3 h-5 w-5" />
                           Mon profil
                         </button>
-                        <button className="w-full flex items-center text-sm font-medium text-white hover:text-orange-600 transition-colors py-3 px-4 rounded-lg hover:bg-gray-50">
+                        <button 
+                          className="w-full flex items-center text-sm font-medium text-white hover:text-orange-600 transition-colors py-3 px-4 rounded-lg hover:bg-gray-50"
+                          onClick={() => {
+                            onPageChange('settings');
+                            setIsMenuOpen(false);
+                          }}
+                        >
                           <Settings className="mr-3 h-5 w-5" />
                           Paramètres
                         </button>

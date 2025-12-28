@@ -155,7 +155,7 @@ export const DashboardLayout = ({
         </aside>
 
         {/* Main content */}
-        <div className="flex flex-1 flex-col lg:pl-64">
+        <div className="flex flex-1 flex-col lg:pl-64 w-80">
           {/* Header déjà inclus dans page.tsx, donc on ne le met pas ici */}
           
           {/* Main content area */}

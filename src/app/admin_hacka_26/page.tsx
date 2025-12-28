@@ -36,7 +36,11 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-800">
-      <AdminHeader />
+      {/* Utilisation du AdminHeader avec props */}
+      <AdminHeader 
+        activePage={activePage}
+        onPageChange={setActivePage}
+      />
       <DashboardLayout 
         activePage={activePage}
         onPageChange={setActivePage}
